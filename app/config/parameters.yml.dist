@@ -1,2 +1,5 @@
-# This file is auto-generated during the composer install
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
 parameters:
+    secret: 5d175083fec2d975a8473d4e191b78b331ed67a2
