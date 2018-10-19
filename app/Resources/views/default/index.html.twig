@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <form id="exchangeconvert">
+        <h1>Exchange Converter</h1>
+        <hr>
+        <table>
+            <tr>
+                <td>RUB</td>
+                <td><input type="text" name="rub" /></td>
+            </tr>
+            <tr id="trPLN" style="visibility: hidden;">
+                <td>PLN</td>
+                <td><input type="text" name="pln"/></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Convert" /></td>
+            </tr>
+        </table>
+    </form>
+    <div id="msgWait" style="display: none;">Please wait...</div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        function ajaxStart() {
+            $("#exchangeconvert input").prop("disabled", true);
+            $("#msgWait").show();
+        }
+        function ajaxStop() {
+            $("#exchangeconvert input").prop("disabled", false);
+            $("#msgWait").hide();
+        }
+
+        jQuery(function () {
+
+            $("#exchangeconvert").submit(function (e) {
+                e.preventDefault();
+                var valueRUB = $("#exchangeconvert input[name=rub]").val();
+
+                if (valueRUB == '') {
+                    alert('Please give value');
+                    return;
+                }
+                
+                ajaxStart();
+                $.ajax({
+                    type: 'POST',
+                    url: "convert",
+                    data: 'from=RUB&to=PLN&value=' + valueRUB,
+                    success: function (data) {
+                        ajaxStop();
+                        $("#exchangeconvert input[name=pln]").val(data.value);
+                        $("#trPLN").css({"visibility": "visible"});
+                    },
+                    error: function (xhr) { // if error occured
+                        ajaxStop();
+                        alert("Error occured.please try again");
+                        console.log(xhr.statusText + xhr.responseText);
+                    },
+                    dataType: 'json'
+                });
+            });
+
+        });
+    </script>
+{% endblock %}
