@@ -1,6 +1,9 @@
 <?php
 namespace CurrencyExchangeService;
 
+/**
+* Martin Fowler's Pattern
+**/
 class Money
 {
 
